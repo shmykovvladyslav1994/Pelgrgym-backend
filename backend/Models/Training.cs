@@ -14,6 +14,8 @@ public class Training
     public int RestDays { get; set; }
 
     public IncrementOrder IncrementOrder { get; set; }
+    public int IncrementValue { get; set; }
+    public int IncrementIntervalPerDays { get; set; }
 
     public int UserId { get; set; }
     public User User { get; set; } = null!;

@@ -15,10 +15,6 @@ var jwtSecret = builder.Configuration["Jwt:Secret"];
 var issuer = builder.Configuration["Jwt:Issuer"];
 var audience = builder.Configuration["Jwt:Audience"];
 
-Console.WriteLine(jwtSecret);
-Console.WriteLine(issuer);
-Console.WriteLine(audience);
-
 if (string.IsNullOrEmpty(jwtSecret))
 {
     throw new Exception("JWT Secret is not configured");
@@ -80,7 +76,6 @@ var connectionString =
     $"Username={Environment.GetEnvironmentVariable("DbUser")};" +
     $"Password={Environment.GetEnvironmentVariable("DbPassword")};" +
     $"SSLMode=Require;TrustServerCertificate=true";
-Console.WriteLine(connectionString);
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(connectionString));
 
