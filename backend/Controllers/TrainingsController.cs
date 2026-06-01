@@ -31,6 +31,8 @@ public class TrainingsController : ControllerBase
             WorkDays = dto.TrainingCycle.WorkDays,
             RestDays = dto.TrainingCycle.RestDays,
             IncrementOrder = dto.IncrementOrder,
+            IncrementValue = dto.IncrementValue,
+            IncrementIntervalPerDays = dto.IncrementIntervalPerDays,
 
             UserId = userId,
 
@@ -68,6 +70,8 @@ public class TrainingsController : ControllerBase
             restIntervalSec = t.RestIntervalSec,
             createdAt = t.CreatedAt,
             incrementOrder = t.IncrementOrder,
+            incrementValue = t.IncrementValue,
+            incrementIntervalPerDays = t.IncrementIntervalPerDays,
 
             trainingCycle = new
             {
