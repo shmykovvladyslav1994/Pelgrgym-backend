@@ -39,9 +39,6 @@ public class TrainingsController : ControllerBase
             Sets = dto.Sets.Select(s => new TrainingSet
             {
                 Reps = s.Reps,
-
-                ProgressionType = s.ProgressionRule.Type,
-                ProgressionValue = s.ProgressionRule.Value,
             }).ToList()
         };
 
@@ -82,12 +79,6 @@ public class TrainingsController : ControllerBase
             sets = t.Sets.Select(s => new
             {
                 reps = s.Reps,
-
-                progressionRule = new
-                {
-                    type = s.ProgressionType,
-                    value = s.ProgressionValue,
-                }
             })
         });
 
