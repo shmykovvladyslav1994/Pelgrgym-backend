@@ -23,5 +23,6 @@ namespace backend.Data
         public DbSet<User> Users { get; set; }
         public DbSet<Training> Trainings { get; set; }
         public DbSet<TrainingSet> TrainingSets { get; set; }
+        public DbSet<TrainingEvent> TrainingEvents { get; set; }
     }
 }
