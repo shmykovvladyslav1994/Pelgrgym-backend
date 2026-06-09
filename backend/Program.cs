@@ -52,10 +52,12 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowReactApp",
         policy =>
         {
-            policy.WithOrigins("http://localhost:3000")
-                  .AllowAnyHeader()
-                  .AllowAnyMethod()
-                  .AllowCredentials();
+            policy.WithOrigins(
+                "http://localhost:3000",
+                "https://pelgrgym-frontend.onrender.com"
+                ).AllowAnyHeader()
+                 .AllowAnyMethod()
+                 .AllowCredentials();
         });
 });
 
