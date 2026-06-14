@@ -3,11 +3,10 @@
 public class TrainingEvent
 {
     public int Id { get; set; }
-
     public DateTime Date { get; set; }
-
     public TrainingResult Result { get; set; }
 
-    // связь с тренировкой
     public int TrainingId { get; set; }
+
+    public Training Training { get; set; } = null!;
 }
