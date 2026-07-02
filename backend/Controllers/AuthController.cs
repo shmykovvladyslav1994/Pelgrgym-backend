@@ -75,7 +75,7 @@ public class AuthController : ControllerBase
                     new Claim(ClaimTypes.Email, email),
                     new Claim(ClaimTypes.Name, payload.Name ?? "")
                 ]),
-                Expires = DateTime.UtcNow.AddHours(2),
+                Expires = DateTime.UtcNow.AddMonths(2),
 
                 Issuer = issuer,
                 Audience = audience,
