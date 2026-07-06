@@ -36,6 +36,20 @@ public class AuthController : ControllerBase
         });
     }
 
+    [HttpGet("test-google")]
+    public async Task<IActionResult> TestGoogle()
+    {
+        using var client = new HttpClient();
+
+        var response = await client.GetAsync("https://www.googleapis.com/oauth2/v3/certs");
+
+        return Ok(new
+        {
+            Status = response.StatusCode,
+            Body = await response.Content.ReadAsStringAsync()
+        });
+    }
+
     [HttpPost("google")]
     public async Task<IActionResult> GoogleLogin([FromBody] GoogleDto dto)
     {
@@ -90,10 +104,10 @@ public class AuthController : ControllerBase
 
             return Ok(new { user, token = jwt });
         }
-        catch (Exception ex)
-        {
-            Console.WriteLine(ex.ToString());
-            return BadRequest(ex.Message);
-        }
+catch (Exception ex)
+{
+    Console.WriteLine(ex.ToString());
+    return BadRequest(ex.Message);
+}
     }
 }
