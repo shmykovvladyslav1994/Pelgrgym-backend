@@ -36,18 +36,44 @@ public class AuthController : ControllerBase
         });
     }
 
-    [HttpGet("test-google")]
-    public async Task<IActionResult> TestGoogle()
+    [HttpGet("ping-google")]
+    public async Task<IActionResult> PingGoogle()
     {
         using var client = new HttpClient();
 
-        var response = await client.GetAsync("https://www.googleapis.com/oauth2/v3/certs");
-
-        return Ok(new
+        var urls = new[]
         {
-            Status = response.StatusCode,
-            Body = await response.Content.ReadAsStringAsync()
-        });
+        "https://www.googleapis.com/oauth2/v3/certs",
+        "https://www.googleapis.com/oauth2/v1/certs",
+        "https://oauth2.googleapis.com/certs"
+    };
+
+        var results = new List<object>();
+
+        foreach (var url in urls)
+        {
+            try
+            {
+                var res = await client.GetAsync(url);
+
+                results.Add(new
+                {
+                    url,
+                    status = (int)res.StatusCode,
+                    body = await res.Content.ReadAsStringAsync()
+                });
+            }
+            catch (Exception ex)
+            {
+                results.Add(new
+                {
+                    url,
+                    error = ex.Message
+                });
+            }
+        }
+
+        return Ok(results);
     }
 
     [HttpPost("google")]
