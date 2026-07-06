@@ -1,6 +1,6 @@
 ﻿using backend.Data;
 using backend.Models;
-using Google.Apis.Auth;
+using System.Text.Json;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -36,55 +36,26 @@ public class AuthController : ControllerBase
         });
     }
 
-    [HttpGet("ping-google")]
-    public async Task<IActionResult> PingGoogle()
-    {
-        using var client = new HttpClient();
-
-        var urls = new[]
-        {
-        "https://www.googleapis.com/oauth2/v3/certs",
-        "https://www.googleapis.com/oauth2/v1/certs",
-        "https://oauth2.googleapis.com/certs"
-    };
-
-        var results = new List<object>();
-
-        foreach (var url in urls)
-        {
-            try
-            {
-                var res = await client.GetAsync(url);
-
-                results.Add(new
-                {
-                    url,
-                    status = (int)res.StatusCode,
-                    body = await res.Content.ReadAsStringAsync()
-                });
-            }
-            catch (Exception ex)
-            {
-                results.Add(new
-                {
-                    url,
-                    error = ex.Message
-                });
-            }
-        }
-
-        return Ok(results);
-    }
-
     [HttpPost("google")]
     public async Task<IActionResult> GoogleLogin([FromBody] GoogleDto dto)
     {
         try
         {
             // Проверяем токен у Google
-            var payload = await GoogleJsonWebSignature.ValidateAsync(dto.Token);
+            using var client = new HttpClient();
+
+            var response = await client.GetStringAsync(
+                $"https://oauth2.googleapis.com/tokeninfo?id_token={dto.Token}");
+
+            var payload = JsonSerializer.Deserialize<GoogleTokenInfo>(
+                response,
+                new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true
+                    }) ?? throw new Exception("Invalid Google token response");
 
             var email = payload.Email;
+            var name = payload.Name;
             var user = await _db.Users.FirstOrDefaultAsync(u => u.Email == email);
 
             if (user == null)
