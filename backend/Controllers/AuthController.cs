@@ -90,9 +90,10 @@ public class AuthController : ControllerBase
 
             return Ok(new { user, token = jwt });
         }
-        catch
+        catch (Exception ex)
         {
-            return Unauthorized();
+            Console.WriteLine(ex.ToString());
+            return BadRequest(ex.Message);
         }
     }
 }
