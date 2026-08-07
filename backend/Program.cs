@@ -10,13 +10,7 @@ if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development
     Env.Load();
 }
 
-var options = new WebApplicationOptions
-{
-    Args = args,
-    ApplicationName = typeof(Program).Assembly.GetName().Name
-};
-
-var builder = WebApplication.CreateEmptyBuilder(options);
+var builder = WebApplication.CreateBuilder(args);
 
 builder.Configuration
     .AddJsonFile("appsettings.json", optional: true, reloadOnChange: false)
