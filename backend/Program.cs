@@ -5,19 +5,18 @@ using Microsoft.OpenApi.Models;
 using System.Text;
 using DotNetEnv;
 
-var builderOptions = new WebApplicationOptions
-{
-    Args = args
-};
-
-var builder = WebApplication.CreateBuilder(builderOptions);
-
-if (builder.Environment.IsDevelopment())
+if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development")
 {
     Env.Load();
 }
 
-builder.Configuration.Sources.Clear();
+var options = new WebApplicationOptions
+{
+    Args = args,
+    ApplicationName = typeof(Program).Assembly.GetName().Name
+};
+
+var builder = WebApplication.CreateEmptyBuilder(options);
 
 builder.Configuration
     .AddJsonFile("appsettings.json", optional: true, reloadOnChange: false)
