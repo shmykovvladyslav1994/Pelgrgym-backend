@@ -5,9 +5,24 @@ using Microsoft.OpenApi.Models;
 using System.Text;
 using DotNetEnv;
 
-Env.Load();
+var builderOptions = new WebApplicationOptions
+{
+    Args = args
+};
 
-var builder = WebApplication.CreateBuilder(args);
+var builder = WebApplication.CreateBuilder(builderOptions);
+
+if (builder.Environment.IsDevelopment())
+{
+    Env.Load();
+}
+
+builder.Configuration.Sources.Clear();
+
+builder.Configuration
+    .AddJsonFile("appsettings.json", optional: true, reloadOnChange: false)
+    .AddEnvironmentVariables();
+
 var port = Environment.GetEnvironmentVariable("PORT") ?? "5000";
 
 // JWT секрет
